@@ -8,55 +8,43 @@
 import SwiftUI
 
 struct SideMenuView: View {
-    @Binding var isMenuOpen: Bool
-    @Binding var selectedScreen: String
-
+    @Binding var selectedSideMenuTab: Int
+    @Binding var presentSideMenu: Bool
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 25) {
-            Button(action: {
-                withAnimation {
-                    isMenuOpen.toggle()
+        HStack {
+            ZStack {
+                Rectangle()
+                    .fill(Color.theme.blue)
+                    .frame(width: 270)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 3)
+                
+                VStack(alignment: .leading, spacing: 20) {
+                    ForEach(SideMenuRowType.allCases, id: \.self) { row in
+                        Button(action: {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                selectedSideMenuTab = row.rawValue
+                                presentSideMenu.toggle()
+                            }
+                        }) {
+                            Text(row.title)
+                                .font(.system(size: 18, weight: .regular))
+                                .foregroundColor(.purple)
+                                .padding(.leading, 20)
+                        }
+                    }
+                    Spacer()
                 }
-            }) {
-                Image(systemName: "line.horizontal.3") // Close menu icon
-                    .font(.title2)
-                    .foregroundColor(.black)
-                    .padding(.top, 40)
+                .padding(.top, 100)
             }
-            
-            VStack(alignment: .leading, spacing: 20) {
-                MenuItem(title: "About Us") {
-                    selectedScreen = "AboutUs"
-                    isMenuOpen.toggle()
-                }
-                MenuItem(title: "Settings") {
-                    selectedScreen = "Settings"
-                    isMenuOpen.toggle()
-                }
-                MenuItem(title: "Sign Out") {
-                    print("Sign Out Logic") // Implement sign-out action
-                }
-            }
-            .padding(.top, 20)
-            
             Spacer()
         }
-        .padding(.leading, 20)
-        .frame(width: UIScreen.main.bounds.width / 2, height: UIScreen.main.bounds.height)
-        .background(Color.theme.blue) // Adjusted to match screenshot
-        .edgesIgnoringSafeArea(.all)
+        .background(Color.clear)
     }
 }
 
-struct MenuItem: View {
-    let title: String
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Text(title)
-                .font(.headline)
-                .foregroundColor(Color.theme.purple)
-        }
+struct SideMenuView_Previews: PreviewProvider {
+    static var previews: some View {
+        SideMenuView(selectedSideMenuTab: .constant(0), presentSideMenu: .constant(true))
     }
 }

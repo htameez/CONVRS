@@ -10,10 +10,6 @@ import SwiftUI
 struct HomeView: View {
     var body: some View {
         VStack {
-            Text("Convrs")
-                .font(.largeTitle)
-                .padding()
-            Spacer()
         }
     }
 }
