@@ -13,54 +13,62 @@ struct SideMenuContainerView: View {
 
     var body: some View {
         ZStack {
-            // Main Content (Home, About Us, Settings)
-            NavigationStack {
-                Group {
-                    if selectedScreen == "Home" {
-                        HomeView()
-                    } else if selectedScreen == "AboutUs" {
-                        AboutUsView()
-                    } else if selectedScreen == "Settings" {
-                        SettingsView()
+            // Side Menu View
+            if isMenuOpen {
+                SideMenuView(isMenuOpen: $isMenuOpen, selectedScreen: $selectedScreen)
+                    .frame(width: 250)
+                    .transition(.move(edge: .leading))
+            }
+
+            // Main content view
+            mainContentView()
+                .offset(x: isMenuOpen ? 250 : 0)
+                .disabled(isMenuOpen)
+        }
+        .animation(.easeInOut, value: isMenuOpen)
+    }
+
+    private func mainContentView() -> some View {
+        VStack(spacing: 0) {
+            // Top bar
+            HStack {
+                Button(action: {
+                    withAnimation {
+                        isMenuOpen.toggle()
                     }
+                }) {
+                    Image(systemName: "line.horizontal.3")
+                        .resizable()
+                        .frame(width: 20, height: 15)
+                        .padding()
                 }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                isMenuOpen.toggle()
-                            }
-                        }) {
-                            Image("menu_icon")
-                                .resizable()
-                                .frame(width: 24, height: 24)
-                        }
-                    }
+
+                Spacer()
+
+                Text(selectedScreen == "Home" ? "EthicaBot" : selectedScreen)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
+
+                Spacer()
+
+                Image(systemName: "line.horizontal.3")
+                    .resizable()
+                    .frame(width: 20, height: 15)
+                    .opacity(0)
+                    .padding()
+            }
+
+            // Display screen content
+            Group {
+                if selectedScreen == "Home" {
+                    HomeView()
+                } else if selectedScreen == "AboutUs" {
+                    AboutUsView()
+                } else if selectedScreen == "Settings" {
+                    SettingsView()
                 }
             }
-            .offset(x: isMenuOpen ? UIScreen.main.bounds.width / 2 : 0) // Shift content when menu is open
-            .overlay(
-                isMenuOpen ?
-                Color.black.opacity(0.3)
-                    .edgesIgnoringSafeArea(.all)
-                    .onTapGesture { withAnimation { isMenuOpen.toggle() } }
-                : nil
-            )
-            .animation(.easeInOut(duration: 0.3), value: isMenuOpen)
-
-            // Side Menu
-            SideMenuView(isMenuOpen: $isMenuOpen, selectedScreen: $selectedScreen)
-                .offset(x: isMenuOpen ? 0 : -UIScreen.main.bounds.width / 2) // Fully off-screen when closed
-                .animation(.easeInOut(duration: 0.3), value: isMenuOpen)
         }
-        .edgesIgnoringSafeArea(.all)
     }
 }
-
-
-struct SideMenuContainerView_Previews: PreviewProvider {
-    static var previews: some View {
-        SideMenuContainerView()
-    }
-}
-
