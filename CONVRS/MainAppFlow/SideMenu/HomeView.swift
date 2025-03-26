@@ -110,11 +110,8 @@ struct HomeView: View {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        if let token = ProcessInfo.processInfo.environment["HUGGING_FACE_TOKEN"] {
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        } else {
-            print("❌ Environment variable HUGGING_FACE_TOKEN not found.")
-        }
+        // 🔐 Insert your Hugging Face API key here:
+        request.setValue("Bearer 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", forHTTPHeaderField: "Authorization")
         request.httpBody = jsonData
 
         do {
