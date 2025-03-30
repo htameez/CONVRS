@@ -45,7 +45,7 @@ struct SideMenuContainerView: View {
 
                 Spacer()
 
-                Text(selectedScreen == "Home" ? "EthicaBot" : selectedScreen)
+                Text(selectedScreen == "Home" ? "CONVRS" : selectedScreen)
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.black)
