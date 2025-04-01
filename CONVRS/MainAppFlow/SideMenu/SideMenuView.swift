@@ -10,6 +10,7 @@ import SwiftUI
 struct SideMenuView: View {
     @Binding var selectedSideMenuTab: Int
     @Binding var presentSideMenu: Bool
+    @EnvironmentObject var authService: AuthService
     
     var body: some View {
         HStack {
@@ -24,13 +25,17 @@ struct SideMenuView: View {
                     ForEach(SideMenuRowType.allCases, id: \.self) { row in
                         Button(action: {
                             withAnimation(.easeInOut(duration: 0.3)) {
-                                selectedSideMenuTab = row.rawValue
-                                presentSideMenu.toggle()
+                                if row == .signout {
+                                    authService.signOut()
+                                } else {
+                                    selectedSideMenuTab = row.rawValue
+                                    presentSideMenu.toggle()
+                                }
                             }
                         }) {
                             Text(row.title)
                                 .font(.system(size: 18, weight: .regular))
-                                .foregroundColor(.purple)
+                                .foregroundColor(row == .signout ? .red : Color.theme.purple)
                         }
                     }
                     Spacer()

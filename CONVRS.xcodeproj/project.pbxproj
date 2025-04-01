@@ -58,27 +58,40 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		17B3BFDD2D9BAD8000FA2398 /* Exceptions for "CONVRS" folder in "CONVRS" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 174F1CD42D6A87AE0022C47A /* CONVRS */;
+		};
 		17FB757B2D9B356D00811EF5 /* Exceptions for "CONVRS" folder in "CONVRSTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Authentication/ViewModel/AuthService.swift,
+				Authentication/Views/LoginView.swift,
+				Authentication/Views/OnboardingView.swift,
+				Authentication/Views/SignUpView.swift,
 				"GoogleService-Info.plist",
-				MainAppFlow/Screens/Login.swift,
-				MainAppFlow/Screens/Onboarding.swift,
-				MainAppFlow/Screens/SignUp.swift,
-				MainAppFlow/ViewModel/login.swift,
-				MainAppFlow/ViewModel/register.swift,
+				"Lato-Regular.ttf",
+				LightStatusBarHostingController.swift,
+				"Poppins-Bold.ttf",
+				"Poppins-Regular.ttf",
 			);
 			target = 174F1CE42D6A87B20022C47A /* CONVRSTests */;
 		};
 		17FB757C2D9B356D00811EF5 /* Exceptions for "CONVRS" folder in "CONVRSUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Authentication/ViewModel/AuthService.swift,
+				Authentication/Views/LoginView.swift,
+				Authentication/Views/OnboardingView.swift,
+				Authentication/Views/SignUpView.swift,
 				"GoogleService-Info.plist",
-				MainAppFlow/Screens/Login.swift,
-				MainAppFlow/Screens/Onboarding.swift,
-				MainAppFlow/Screens/SignUp.swift,
-				MainAppFlow/ViewModel/login.swift,
-				MainAppFlow/ViewModel/register.swift,
+				"Lato-Regular.ttf",
+				LightStatusBarHostingController.swift,
+				"Poppins-Bold.ttf",
+				"Poppins-Regular.ttf",
 			);
 			target = 174F1CEE2D6A87B30022C47A /* CONVRSUITests */;
 		};
@@ -88,6 +101,7 @@
 		174F1CD72D6A87AE0022C47A /* CONVRS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				17B3BFDD2D9BAD8000FA2398 /* Exceptions for "CONVRS" folder in "CONVRS" target */,
 				17FB757B2D9B356D00811EF5 /* Exceptions for "CONVRS" folder in "CONVRSTests" target */,
 				17FB757C2D9B356D00811EF5 /* Exceptions for "CONVRS" folder in "CONVRSUITests" target */,
 			);
@@ -162,6 +176,7 @@
 				174F1CD72D6A87AE0022C47A /* CONVRS */,
 				174F1CE82D6A87B20022C47A /* CONVRSTests */,
 				174F1CF22D6A87B30022C47A /* CONVRSUITests */,
+				17FB76902D9B8A8400811EF5 /* Frameworks */,
 				174F1CD62D6A87AE0022C47A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -174,6 +189,13 @@
 				174F1CEF2D6A87B30022C47A /* CONVRSUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		17FB76902D9B8A8400811EF5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -517,6 +539,7 @@
 				DEVELOPMENT_TEAM = D9B6BU2J6A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CONVRS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CONVRS;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -549,6 +572,7 @@
 				DEVELOPMENT_TEAM = D9B6BU2J6A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CONVRS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CONVRS;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
