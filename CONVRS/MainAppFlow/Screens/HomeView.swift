@@ -19,7 +19,6 @@ struct HomeView: View {
                 Spacer()
 
                 VStack(spacing: 16) {
-                    // 🖼 Your PNG logo from Assets
                     Image("ConvrsLogo")
                         .resizable()
                         .scaledToFit()
@@ -30,6 +29,7 @@ struct HomeView: View {
                         .font(.headline)
                         .foregroundColor(.gray)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
 
                 Spacer()
             } else {
