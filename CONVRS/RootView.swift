@@ -50,7 +50,7 @@ struct RootView: View {
     func currentTitle() -> String {
         switch selectedSideMenuTab {
         case 0:
-            return "Home"
+            return "CONVRS"
         case 1:
             return "About Us"
         case 2:

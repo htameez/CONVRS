@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct CONVRSApp: App {
+    
+    init() {
+        FirebaseApp.configure()
+    }
+
     var body: some Scene {
         WindowGroup {
-            RootView()
+            Onboarding() // Start with onboarding, which handles login check
         }
     }
 }

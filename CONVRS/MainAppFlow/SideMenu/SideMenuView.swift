@@ -16,7 +16,8 @@ struct SideMenuView: View {
             ZStack {
                 Rectangle()
                     .fill(Color.theme.blue)
-                    .frame(width: 270)
+                    .frame(width: UIScreen.main.bounds.width / 2)
+                    .ignoresSafeArea(.all, edges: .vertical)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 3)
                 
                 VStack(alignment: .leading, spacing: 20) {
@@ -30,7 +31,6 @@ struct SideMenuView: View {
                             Text(row.title)
                                 .font(.system(size: 18, weight: .regular))
                                 .foregroundColor(.purple)
-                                .padding(.leading, 20)
                         }
                     }
                     Spacer()
