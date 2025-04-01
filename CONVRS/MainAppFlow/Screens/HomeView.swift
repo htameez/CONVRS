@@ -113,7 +113,7 @@ struct HomeView: View {
         if let token = ProcessInfo.processInfo.environment["HUGGING_FACE_TOKEN"] {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         } else {
-            print("❌ Environment variable HUGGING_FACE_TOKEN not found.")
+            print("Environment variable HUGGING_FACE_TOKEN not found.")
         }
         request.httpBody = jsonData
 
