@@ -117,8 +117,10 @@ struct LoginView: View {
                         .font(.footnote)
                 }
             }
-            .padding()
+            .padding(.horizontal)
             .frame(maxHeight: .infinity, alignment: .center)
+            
+            Spacer()
         }
     }
 

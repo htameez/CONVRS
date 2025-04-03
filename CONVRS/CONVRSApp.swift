@@ -41,8 +41,10 @@ struct CONVRSApp: App {
             } else {
                 if authService.user != nil {
                     RootView().environmentObject(authService)
+                        .preferredColorScheme(.light)
                 } else {
                     Onboarding().environmentObject(authService)
+                        .preferredColorScheme(.light)
                 }
             }
         }
