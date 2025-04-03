@@ -109,8 +109,6 @@ struct SignUpView: View {
             }
             .padding(.horizontal)
             .frame(maxHeight: .infinity, alignment: .center)
-            
-            Spacer()
         }
     }
 
