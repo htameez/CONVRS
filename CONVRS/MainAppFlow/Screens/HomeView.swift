@@ -19,7 +19,6 @@ struct HomeView: View {
                 Spacer()
 
                 VStack(spacing: 16) {
-                    // 🖼 Your PNG logo from Assets
                     Image("ConvrsLogo")
                         .resizable()
                         .scaledToFit()
@@ -30,6 +29,7 @@ struct HomeView: View {
                         .font(.headline)
                         .foregroundColor(.gray)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
 
                 Spacer()
             } else {
@@ -113,7 +113,7 @@ struct HomeView: View {
         if let token = ProcessInfo.processInfo.environment["HUGGING_FACE_TOKEN"] {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         } else {
-            print("❌ Environment variable HUGGING_FACE_TOKEN not found.")
+            print("Environment variable HUGGING_FACE_TOKEN not found.")
         }
         request.httpBody = jsonData
 
