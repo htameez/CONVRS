@@ -10,7 +10,7 @@ import SwiftUI
 struct RootView: View {
     @State var presentSideMenu = false
     @State var selectedSideMenuTab = 0
-    
+
     var body: some View {
         ZStack {
             NavigationView {
@@ -22,17 +22,17 @@ struct RootView: View {
                                 presentSideMenu.toggle()
                             }
                         }) {
-                            Image("menu_icon")
+                            Image(selectedSideMenuTab == 1 ? "light_menu_icon" : "menu_icon")
                                 .resizable()
                                 .frame(width: 24, height: 24)
                         })
                 }
             }
-            
+
             SideMenuContainerView(isShowing: $presentSideMenu, selectedSideMenuTab: $selectedSideMenuTab)
         }
     }
-    
+
     @ViewBuilder
     func selectedView() -> some View {
         switch selectedSideMenuTab {
@@ -46,7 +46,7 @@ struct RootView: View {
             HomeView()
         }
     }
-    
+
     func currentTitle() -> String {
         switch selectedSideMenuTab {
         case 0:
@@ -66,4 +66,5 @@ struct RootView_Previews: PreviewProvider {
         RootView()
     }
 }
+
 

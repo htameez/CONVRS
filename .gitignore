@@ -1,0 +1,6 @@
+# Xcode user-specific files
+*.xcuserdatad/
+*.xcuserstate
+*.xccheckout
+*.moved-aside
+DerivedData/
