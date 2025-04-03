@@ -11,32 +11,37 @@ struct SideMenuContainerView: View {
     @State private var isMenuOpen = false
     @State private var selectedScreen = "Home"
 
+    var selectedView: some View {
+        switch selectedScreen {
+        case "Home":
+            return AnyView(HomeView())
+        case "AboutUs":
+            return AnyView(AboutUsView())
+        case "Settings":
+            return AnyView(SettingsView())
+        default:
+            return AnyView(HomeView()) // Fallback to HomeView
+        }
+    }
+
     var body: some View {
         ZStack {
             // Main Content (Home, About Us, Settings)
             NavigationStack {
-                Group {
-                    if selectedScreen == "Home" {
-                        HomeView()
-                    } else if selectedScreen == "AboutUs" {
-                        AboutUsView()
-                    } else if selectedScreen == "Settings" {
-                        SettingsView()
-                    }
-                }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                isMenuOpen.toggle()
+                selectedView
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button(action: {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    isMenuOpen.toggle()
+                                }
+                            }) {
+                                Image("menu_icon")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
                             }
-                        }) {
-                            Image("menu_icon")
-                                .resizable()
-                                .frame(width: 24, height: 24)
                         }
                     }
-                }
             }
             .offset(x: isMenuOpen ? UIScreen.main.bounds.width / 2 : 0) // Shift content when menu is open
             .overlay(
@@ -56,6 +61,7 @@ struct SideMenuContainerView: View {
         .edgesIgnoringSafeArea(.all)
     }
 }
+
 
 
 struct SideMenuContainerView_Previews: PreviewProvider {
