@@ -50,6 +50,13 @@
             ReferencedContainer = "container:CONVRS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "HUGGING_FACE_TOKEN"
+            value = "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"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

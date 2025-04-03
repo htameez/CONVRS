@@ -12,26 +12,25 @@ struct HomeView: View {
     @State private var inputText = ""
     @State private var isLoading = false
     @State private var hasStartedChat = false
-
+    
     var body: some View {
-<<<<<<< HEAD
         VStack(spacing: 0) {
             if !hasStartedChat {
                 Spacer()
-
+                
                 VStack(spacing: 16) {
                     Image("ConvrsLogo")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 160, height: 160)
                         .opacity(0.9)
-
+                    
                     Text("Welcome to CONVRS")
                         .font(.headline)
                         .foregroundColor(.gray)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-
+                
                 Spacer()
             } else {
                 ScrollView {
@@ -47,18 +46,18 @@ struct HomeView: View {
                     .padding()
                 }
             }
-
+            
             if isLoading {
                 ProgressView("Thinking...")
                     .padding()
             }
-
+            
             HStack {
                 TextField("Ask your ethical question...", text: $inputText)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
                     .disabled(isLoading)
-
+                
                 Button(action: sendMessage) {
                     Image(systemName: "arrow.up.circle.fill")
                         .font(.largeTitle)
@@ -67,12 +66,10 @@ struct HomeView: View {
                 .disabled(isLoading || inputText.isEmpty)
             }
             .padding(.bottom)
-=======
-        VStack {
->>>>>>> Hamna
         }
     }
 
+    // ✅ Move the function OUTSIDE of body
     func sendMessage() {
         guard !inputText.isEmpty else { return }
 
@@ -119,6 +116,7 @@ struct HomeView: View {
         } else {
             print("Environment variable HUGGING_FACE_TOKEN not found.")
         }
+
         request.httpBody = jsonData
 
         do {
@@ -149,3 +147,4 @@ struct HomeView: View {
         }
     }
 }
+
