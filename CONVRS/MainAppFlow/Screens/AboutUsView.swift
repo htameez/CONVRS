@@ -60,20 +60,20 @@ struct ProfileCardView: View {
             Image(profile.imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 120, height: 120)
-                .clipShape(Circle())
+                .frame(width: 240, height: 317)
+                .clipped() // ensures any overflow is cropped
                 .padding(.top, 10)
-
+            
             Text(profile.name)
                 .font(FontManager.poppins(.bold, size: 36))
                 .foregroundColor(.white)
 
             Text(profile.location)
-                .font(FontManager.lato(.regular, size: 20))
+                .font(FontManager.lato(.regular, size: 18))
                 .foregroundColor(.white)
 
             Text(profile.bio)
-                .font(FontManager.lato(.regular, size: 15))
+                .font(FontManager.lato(.regular, size: 13))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)

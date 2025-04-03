@@ -32,18 +32,17 @@ struct Onboarding: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
 
-                        HStack(spacing: 10) {
-                            Text("CONVRS")
-                                .font(FontManager.poppins(.bold, size: 45))
-                                .foregroundColor(.white)
-
+                        HStack(spacing: 4) {
                             Image("convrs_logo")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 80, height: 80)
+                            
+                            Text("CONVRS")
+                                .font(FontManager.poppins(.bold, size: 45))
+                                .foregroundColor(.white)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal)
 
                         Text("An ethical discussion chatbot that helps you explore ideas with honesty and empathy.")
                             .font(FontManager.lato(.regular, size: 15))
