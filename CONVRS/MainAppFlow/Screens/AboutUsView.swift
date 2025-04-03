@@ -10,10 +10,6 @@ import SwiftUI
 struct AboutUsView: View {
     var body: some View {
         VStack {
-            Text("About Us")
-                .font(.largeTitle)
-                .padding()
-            Spacer()
         }
     }
 }

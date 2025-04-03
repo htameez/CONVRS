@@ -14,6 +14,7 @@ struct HomeView: View {
     @State private var hasStartedChat = false
 
     var body: some View {
+<<<<<<< HEAD
         VStack(spacing: 0) {
             if !hasStartedChat {
                 Spacer()
@@ -66,6 +67,9 @@ struct HomeView: View {
                 .disabled(isLoading || inputText.isEmpty)
             }
             .padding(.bottom)
+=======
+        VStack {
+>>>>>>> Hamna
         }
     }
 
