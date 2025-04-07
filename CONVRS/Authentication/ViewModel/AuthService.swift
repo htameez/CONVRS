@@ -69,4 +69,8 @@ class AuthService: ObservableObject {
             self.isLoading = false
         }
     }
+    
+    var currentUser: User? {
+        return Auth.auth().currentUser
+    }
 }

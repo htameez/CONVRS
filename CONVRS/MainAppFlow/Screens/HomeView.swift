@@ -6,36 +6,41 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseCore
+import FirebaseFirestore
 
 struct HomeView: View {
     @State private var messages: [String] = []
     @State private var inputText = ""
     @State private var isLoading = false
     @State private var hasStartedChat = false
-    
+    @State private var firstName = ""
+    @EnvironmentObject var authService: AuthService
+
     var body: some View {
         VStack(spacing: 0) {
             if !hasStartedChat {
                 Spacer()
-                
+
                 VStack(spacing: 16) {
                     Image("ConvrsLogo")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 160, height: 160)
                         .opacity(0.9)
-                    
-                    Text("Welcome to CONVRS")
+
+                    Text("Welcome to CONVRS\(firstName.isEmpty ? "" : ", \(firstName)")")
                         .font(.headline)
                         .foregroundColor(.gray)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                
+
                 Spacer()
             } else {
                 ScrollView {
                     VStack(alignment: .leading) {
-                        ForEach(messages, id: \.self) { message in
+                        ForEach(messages, id: \ .self) { message in
                             Text(message)
                                 .padding()
                                 .background(message.starts(with: "You:") ? Color.blue.opacity(0.2) : Color.gray.opacity(0.2))
@@ -46,18 +51,18 @@ struct HomeView: View {
                     .padding()
                 }
             }
-            
+
             if isLoading {
                 ProgressView("Thinking...")
                     .padding()
             }
-            
+
             HStack {
                 TextField("Ask your ethical question...", text: $inputText)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
                     .disabled(isLoading)
-                
+
                 Button(action: sendMessage) {
                     Image(systemName: "arrow.up.circle.fill")
                         .font(.largeTitle)
@@ -66,6 +71,17 @@ struct HomeView: View {
                 .disabled(isLoading || inputText.isEmpty)
             }
             .padding(.bottom)
+        }
+        .onAppear(perform: fetchUserName)
+    }
+
+    func fetchUserName() {
+        guard let uid = authService.currentUser?.uid else { return }
+        let db = Firestore.firestore()
+        db.collection("users").document(uid).getDocument { document, error in
+            if let document = document, document.exists {
+                self.firstName = document["firstName"] as? String ?? ""
+            }
         }
     }
 

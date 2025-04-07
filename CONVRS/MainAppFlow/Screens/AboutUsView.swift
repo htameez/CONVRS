@@ -61,9 +61,9 @@ struct ProfileCardView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 240, height: 317)
-                .clipped() // ensures any overflow is cropped
+                .clipped()
                 .padding(.top, 10)
-            
+
             Text(profile.name)
                 .font(FontManager.poppins(.bold, size: 36))
                 .foregroundColor(.white)
@@ -139,6 +139,7 @@ struct AboutUsView: View {
             UINavigationBar.appearance().scrollEdgeAppearance = appearance
         }
         .statusBarStyle(.lightContent)
+        .preferredColorScheme(.dark) // 👈 Force About Us screen to be light always
     }
 }
 

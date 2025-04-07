@@ -6,6 +6,10 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseAuth
+import FirebaseCore
+import FirebaseFirestore
 
 // MARK: - Main Settings View
 struct SettingsView: View {
@@ -13,27 +17,33 @@ struct SettingsView: View {
     @State private var selectedLanguage = "English"
     @AppStorage("appTheme") private var appTheme = "Light"
     @AppStorage("appLanguage") private var appLanguage = "English"
-    
+
+    @EnvironmentObject var authService: AuthService
+    @State private var name = ""
+    @State private var email = ""
+    @State private var phone = ""
+    @State private var showPasswordPrompt = false
+    @State private var passwordForUpdate = ""
+    @State private var error = ""
+    @State private var newEmail = ""
+    @State private var showEmailChangePrompt = false
+
     let themes = ["Light", "Dark"]
     let languages = ["English", "Spanish", "French"]
-    
+
     var body: some View {
         NavigationView {
             Form {
                 // Account Management
                 Section(header: Text("Account")) {
-                    NavigationLink(destination: AccountManagementView()) {
-                        HStack {
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .clipShape(Circle())
-                            Text("Manage Account")
-                                .font(.headline)
-                        }
+                    TextField("Name", text: $name)
+                    TextField("Email", text: $email)
+                    TextField("Phone", text: $phone)
+                    Button("Save Changes") {
+                        showPasswordPrompt = true
                     }
                 }
-                
+
                 // Preferences
                 Section(header: Text("Preferences")) {
                     Picker("Theme", selection: $selectedTheme) {
@@ -44,7 +54,7 @@ struct SettingsView: View {
                     .onChange(of: selectedTheme) { newTheme in
                         appTheme = newTheme
                     }
-                    
+
                     Picker("Language", selection: $selectedLanguage) {
                         ForEach(languages, id: \.self) { language in
                             Text(language)
@@ -54,7 +64,7 @@ struct SettingsView: View {
                         appLanguage = newLanguage
                     }
                 }
-                
+
                 // Support Section
                 Section(header: Text("Support")) {
                     NavigationLink(destination: HelpCenterView()) {
@@ -64,41 +74,104 @@ struct SettingsView: View {
                         Text("Legal & Privacy")
                     }
                 }
+
+                if !error.isEmpty {
+                    Section {
+                        Text(error).foregroundColor(.red)
+                    }
+                }
             }
             .navigationTitle("Settings")
-            .background(themeColor())
+            .onAppear(perform: fetchUserInfo)
+            .alert("Confirm Password", isPresented: $showPasswordPrompt) {
+                SecureField("Enter password", text: $passwordForUpdate)
+                Button("Update", action: updateUserInfo)
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text("To save your changes, please re-enter your password.")
+            }
+            .alert("Enter New Email", isPresented: $showEmailChangePrompt) {
+                TextField("New Email", text: $newEmail)
+                SecureField("Password", text: $passwordForUpdate)
+                Button("Submit") {
+                    updateEmail()
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Enter your new email and password to confirm.")
+            }
         }
     }
-    
-    // Function to Change Background Color Based on Theme
-    func themeColor() -> Color {
-        switch appTheme {
-        case "Dark": return Color.black
-        case "Blue": return Color.blue.opacity(0.2)
-        case "Green": return Color.green.opacity(0.2)
-        default: return Color.white
-        }
-    }
-}
 
-// MARK: - Account Management View
-struct AccountManagementView: View {
-    @State private var name: String = ""
-    @State private var email: String = ""
-    @State private var phone: String = ""
-    
-    var body: some View {
-        Form {
-            Section(header: Text("Personal Info")) {
-                TextField("Name", text: $name)
-                TextField("Email", text: $email)
-                TextField("Phone", text: $phone)
-            }
-            Button("Save") {
-                // Save changes logic
+    func fetchUserInfo() {
+        guard let uid = authService.currentUser?.uid else { return }
+        let db = Firestore.firestore()
+        db.collection("users").document(uid).getDocument { document, error in
+            if let doc = document, doc.exists {
+                let firstName = doc["firstName"] as? String ?? ""
+                let lastName = doc["lastName"] as? String ?? ""
+                name = "\(firstName) \(lastName)"
+                email = doc["email"] as? String ?? ""
+                phone = doc["phoneNumber"] as? String ?? ""
             }
         }
-        .navigationTitle("Manage Account")
+    }
+
+    func updateUserInfo() {
+        guard let user = Auth.auth().currentUser, let userEmail = user.email else { return }
+
+        let credential = EmailAuthProvider.credential(withEmail: userEmail, password: passwordForUpdate)
+
+        user.reauthenticate(with: credential) { result, error in
+            if let error = error {
+                self.error = "Authentication failed: \(error.localizedDescription)"
+                return
+            }
+
+            let db = Firestore.firestore()
+            let nameParts = name.split(separator: " ")
+            let firstName = nameParts.first ?? ""
+            let lastName = nameParts.dropFirst().joined(separator: " ")
+
+            db.collection("users").document(user.uid).updateData([
+                "firstName": firstName,
+                "lastName": lastName,
+                "phoneNumber": phone
+            ]) { err in
+                if let err = err {
+                    self.error = "Failed to update: \(err.localizedDescription)"
+                } else {
+                    self.error = "Profile updated successfully!"
+                }
+            }
+        }
+    }
+
+    func updateEmail() {
+        guard let user = Auth.auth().currentUser else { return }
+
+        let credential = EmailAuthProvider.credential(withEmail: user.email ?? "", password: passwordForUpdate)
+
+        user.reauthenticate(with: credential) { _, error in
+            if let error = error {
+                self.error = "Reauthentication failed: \(error.localizedDescription)"
+                return
+            }
+
+            user.updateEmail(to: newEmail) { error in
+                if let error = error {
+                    self.error = "Email update failed: \(error.localizedDescription)"
+                } else {
+                    user.sendEmailVerification(completion: nil)
+                    email = newEmail
+                    let db = Firestore.firestore()
+                    db.collection("users").document(user.uid).updateData([
+                        "email": newEmail
+                    ])
+                    self.error = "Email updated! Please verify your new address."
+                }
+            }
+        }
     }
 }
 

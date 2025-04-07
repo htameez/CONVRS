@@ -10,6 +10,7 @@ import SwiftUI
 struct RootView: View {
     @State var presentSideMenu = false
     @State var selectedSideMenuTab = 0
+    @Environment(\.colorScheme) var colorScheme  // 👈 Track light/dark mode
 
     var body: some View {
         ZStack {
@@ -22,7 +23,7 @@ struct RootView: View {
                                 presentSideMenu.toggle()
                             }
                         }) {
-                            Image(selectedSideMenuTab == 1 ? "light_menu_icon" : "menu_icon")
+                            Image(menuIconName())
                                 .resizable()
                                 .frame(width: 24, height: 24)
                         })
@@ -33,6 +34,15 @@ struct RootView: View {
         }
     }
 
+    // 👇 Determine which menu icon to show
+    func menuIconName() -> String {
+        if selectedSideMenuTab == 1 || colorScheme == .dark {
+            return "light_menu_icon"
+        } else {
+            return "menu_icon"
+        }
+    }
+
     @ViewBuilder
     func selectedView() -> some View {
         switch selectedSideMenuTab {
@@ -40,6 +50,7 @@ struct RootView: View {
             HomeView()
         case 1:
             AboutUsView()
+                .preferredColorScheme(.dark)
         case 2:
             SettingsView()
         default:
@@ -47,16 +58,13 @@ struct RootView: View {
         }
     }
 
+
     func currentTitle() -> String {
         switch selectedSideMenuTab {
-        case 0:
-            return "CONVRS"
-        case 1:
-            return "About Us"
-        case 2:
-            return "Settings"
-        default:
-            return "CONVRS"
+        case 0: return "CONVRS"
+        case 1: return "About Us"
+        case 2: return "Settings"
+        default: return "CONVRS"
         }
     }
 }
@@ -66,5 +74,3 @@ struct RootView_Previews: PreviewProvider {
         RootView()
     }
 }
-
-

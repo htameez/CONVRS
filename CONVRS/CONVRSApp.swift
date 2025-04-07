@@ -8,6 +8,8 @@
 import SwiftUI
 import Firebase
 import FirebaseAuth
+import FirebaseCore
+import FirebaseFirestore
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
@@ -20,6 +22,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct CONVRSApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var authService = AuthService()
+    @AppStorage("appTheme") var appTheme = "Light"  // <-- your theme storage
 
     init() {
         #if targetEnvironment(simulator)
@@ -29,25 +32,29 @@ struct CONVRSApp: App {
         FirebaseApp.configure()
 
         #if DEBUG
-        // Sign out user on every launch during development
         try? Auth.auth().signOut()
+        UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
         #endif
     }
 
     var body: some Scene {
         WindowGroup {
+            let colorScheme: ColorScheme? = appTheme == "Dark" ? .dark : .light  // <-- here's your line
+
             if authService.isLoading {
                 ProgressView()
+                    .preferredColorScheme(colorScheme)
             } else {
                 if authService.user != nil {
-                    RootView().environmentObject(authService)
-                        .preferredColorScheme(.light)
+                    RootView()
+                        .environmentObject(authService)
+                        .preferredColorScheme(colorScheme) // <- applied here
                 } else {
-                    Onboarding().environmentObject(authService)
-                        .preferredColorScheme(.light)
+                    Onboarding()
+                        .environmentObject(authService)
+                        .preferredColorScheme(colorScheme) // <- also applied here
                 }
             }
         }
     }
 }
-
